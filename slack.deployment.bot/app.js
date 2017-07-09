@@ -10,6 +10,8 @@ var express = require('express');
 
 var bot = require('./bot/slackbot');
 
+var teamcity = require('./build/teamcity');
+
 var app = express();
 
 // view engine setup
@@ -33,7 +35,7 @@ const router = express.Router();
 // start server
 app.listen(port, function (req, res) {
 
-bot.start();
+bot.start(teamcity);
     console.info(`Started Express server on port ${port}`)
 });
 
