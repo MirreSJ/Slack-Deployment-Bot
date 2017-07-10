@@ -38,6 +38,20 @@ slackbot.prototype.start = function (buildServer) {
 			});
 	});
 
+	slackController.hears(['start set version(.*)'], ['direct_message', 'direct_mention'], (bot, message) => {
+		slackController.log('Deployment for "Review" requested.');
+		// slackController.log('Deployment for "Review" requested. Parameter: "'+ match[1] + '"');
+		var success = buildServer.startSetVersion()
+			.then(function (success) {
+				console.log(success);
+				bot.reply(message, 'Ok, I\'ve started "set version". :white_check_mark:');
+			}).catch(function (reason) {
+				// rejection
+				console.error(reason);
+				bot.reply(message, 'Sorry. Something went wrong with "set version". :warning:');
+			});
+	});
+
 	slackController.hears(['^(?!.*deploy).*$'], ['direct_message', 'direct_mention'], (bot, message) => {
 		slackController.log('Slack message received. "' + message.text + '" from "' + message.user + '" Don\'t know what to do.');
 		bot.reply(message, 'I don\'t know what to do. :worried:');
